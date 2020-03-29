@@ -1,5 +1,9 @@
 from . import md5
 
+"""
+Message class copied from:
+https://github.com/ros/genpy
+"""
 class Message(object):
 
     __slots__ = ['_connection_header']
@@ -25,13 +29,20 @@ class Message(object):
                 else:
                     setattr(self, k, None)
 
+"""
+Since a Python file with the message class is nedeed
+this class is responsible about writing that file
+"""
 class MessageGenerator(object):
 
     def __init__(self, addr):
 
         self.addr=addr
 
+    # method to create message
     def create_message(self):
+
+        #struct primitive data types and default types
         def_types={'bool':'<B', 'byte':'<b', 'char':'<B', 'float32':'<f', 'float64':'<d', 'int8':'<b', 'int16':'<h', 'int32':'<i', 
         'int64':'<q', 'string':'<I%ss', 'uint8':'<B', 'uint16':'<H', 'uint32':'<I', 'uint64':'<Q'}
     
@@ -87,10 +98,9 @@ class MessageGenerator(object):
                 if args or kwds:
                     super({}, self).__init__(*args, **kwds)\n""".format(slots, slots_type, script_name)    
         script.write(initdef)
-        print(len(slots))
-        print(slots_type)
 
-        
+
+        #asigning self attributes        
         for i in range(0,len(data)-1):
             temp=[data[i].split(' ')[0],data[i].split(' ')[1]]
             if 'bool' in temp[0]:
@@ -101,8 +111,6 @@ class MessageGenerator(object):
                 val='0.'
             else:
                 val='0'
-            
-            
             script.write("""
                     if self.{} is None:
                         self.{} = {}""".format(temp[0], temp[0], val))
@@ -115,6 +123,7 @@ class MessageGenerator(object):
             def serialize(self, buff):
                 try:""")
                 
+        #serialization part
         for i in range(0,len(data)-1):
             temp=data[i].split(' ')[1]
             if 'string' in data[i].split(' ')[0]:
@@ -128,5 +137,4 @@ class MessageGenerator(object):
         script.write("""
                 except Exception as e:
                     print(e)""")
-
         script.close()
