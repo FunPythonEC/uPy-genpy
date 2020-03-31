@@ -31,6 +31,4 @@ You could verify it has been created with the following:
 import os
 os.listdir('std_msgs')
 ```
-=======
-Here everything needed in order to generate the python files for message usage can be found.
->>>>>>> 73de94b4ea4c44f58ebda99e238657cef2698260
+
