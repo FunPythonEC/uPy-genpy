@@ -59,6 +59,7 @@ class MessageGenerator(object):
         f = open(self.addr, 'r')
         md5string=''
         msgfile=f.read()
+        f.close()
         data=msgfile.split('\n')
         md5string=data[0]
 
@@ -136,5 +137,52 @@ class MessageGenerator(object):
 
         script.write("""
                 except Exception as e:
+                    print(e)
+            
+            def deserialize(self, str):
+                try:
+                    end = 0""")
+
+        for i in range(0,len(data)-1):
+            temp=data[i].split(' ')[1]
+            temppack=data[i].split(' ')[0]
+            
+            if 'string' in temppack:
+                 script.write("""
+                    start = end
+                    end += 4
+                    (length,) = struct.unpack('<I', str[start:end])
+                    start = end
+                    end += length
+                    self.{} = str[start:end].decode('utf-8')""".format(temp))
+                 
+            elif ('bool' or 'byte' or 'char' or '8') in temppack:
+                script.write("""
+                    start = end
+                    end += 1
+                    (self.{},) = struct.unpack('{}', str[start:end])""".format(temp, def_types.get(temppack)))
+                
+            elif '16' in temppack:
+                script.write("""
+                    start = end
+                    end += 2
+                    (self.{},) = struct.unpack('{}', str[start:end])""".format(temp, def_types.get(temppack)))
+
+            elif '32' in temppack:
+                script.write("""
+                    start = end
+                    end += 4
+                    (self.{},) = struct.unpack('{}', str[start:end])""".format(temp, def_types.get(temppack)))
+
+            elif '64' in temppack:
+                script.write("""
+                    start = end
+                    end += 8
+                    (self.{},) = struct.unpack('{}', str[start:end])""".format(temp, def_types.get(temppack)))
+
+        script.write("""
+                    return self
+                except Exception as e:
                     print(e)""")
+           
         script.close()
