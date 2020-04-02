@@ -13,7 +13,12 @@ In order to use this package the folder `ugenpy` from `src` must be copied to th
 
 There is also a folder called `std_msgs` which has all default `*.msg` files, this folder can also be copied or any other folder with the wanted message types. For memory purposes not all the `msg` files in that folder must be copied, only the ones that are going to be used.
 
->Note: Soon this will be available to be installed with upip.
+You can also install it with:
+``` python
+import upip
+upip.install('micropython-genpy')
+```
+>Note: To use upip you must be connected to WiFi and the files with std_msgs dir must be included manually.
 
 ## Usage
 
