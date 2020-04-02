@@ -50,6 +50,11 @@ class MessageGenerator(object):
         script_addr = self.addr.split('/')[0]
         script_name= self.addr.split('/')[1].split('.')[0]
 
+        #manage init file
+        initpy = open("{}/__init__.py".format(script_addr), 'a')
+        initpy.write('from ._{} import {}\n'.format(script_name, script_name))
+        initpy.close()
+
         #script created
         script = open("{}/_{}.py".format(script_addr,script_name), 'w')
         #import input

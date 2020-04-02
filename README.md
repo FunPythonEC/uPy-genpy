@@ -5,8 +5,7 @@ This is a little similar implementation of `genpy` for uPy. In order to use ross
 ## Features
 
 - [x] uPy files gen with publish availability
-- [ ] uPy files gen with subscribe availability
-- [ ] Actions
+- [x] uPy files gen with subscribe availability
 - [ ] Services
 
 ## Installation
