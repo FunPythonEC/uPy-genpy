@@ -167,6 +167,7 @@ class MessageGenerator(object):
         )
         # serialization part
         for i in range(0, len(data)):
+            if data[i].startswith('#'): continue
             temp = data[i].split(" ")[1]
             print(
                 "data type processed: "
